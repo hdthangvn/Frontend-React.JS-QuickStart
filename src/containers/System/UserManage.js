@@ -3,13 +3,15 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './UserManage.scss';
 import {getAllUsers} from '../../services/userService';
+import ModalUser from './ModalUser';
 
 class UserManage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            arrUsers: []
+            arrUsers: [],
+            isOpenModalUser: false
         }
     }
 
@@ -20,22 +22,43 @@ class UserManage extends Component {
             this.setState({
                 arrUsers: response.users
             })
-        }
+        }  
+    }
+
+    handleAddNewUser = () => {
+        this.setState({
+            isOpenModalUser: true
+        })
         
+    }
+
+    toggleUserModal = () => {
+        this.setState({
+            isOpenModalUser: !this.state.isOpenModalUser,
+        })
     }
  
     /*  Life cyce
         Run conponent:
         1. Run construct -> init state
-        2. Did mount (set state)
-        3. Render
+        2. Did mount (set state) : unmount , nó did mount chỉ 1 lần 
+        3. Render (re-render) nhưng nó của thể render nhiều lần , muốn nó chạy lại phải dùng setState
     */ 
     render() {
         console.log('check render', this.state)
         let arrUsers = this.state.arrUsers
         return (
             <div className="users-container">
+                <ModalUser
+                    isOpen={this.state.isOpenModalUser}
+                    toggleFromParent={this.toggleUserModal} // dùng funcsion bình thường ko cần thiết dùng arron fun
+                    test={'abc'}
+                />
                 <div className="title text-center">Manage users with DucThang</div>
+                <div className='mx-1'>
+                    <button className='btn btn-primary px-3'
+                    onClick={()=>this.handleAddNewUser()}><i className="fas fa-plus"></i>Add new users</button>
+                </div>
                 <div className='users-table mt-3 mx-1'>
                     <table id="customers">
                     <tr>
@@ -46,7 +69,6 @@ class UserManage extends Component {
                         <th>Actions</th>
                     </tr>
                         {arrUsers && arrUsers.map((item, index) => {
-                            console.log('eric check map', item, index);
                             return (
                             <tr key={index}>
                                 <td>{item.email}</td>
