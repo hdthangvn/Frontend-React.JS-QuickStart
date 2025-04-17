@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './UserManage.scss';
-import {getAllUsers, createNewUserService} from '../../services/userService';
+import {getAllUsers, createNewUserService, deleteUserService} from '../../services/userService';
 import ModalUser from './ModalUser';
+import { emitter } from '../../utils/emitter';  // import { emitter } from '../../utils/emitter'; // import emitter từ utils/emitter.js
+
 
 class UserManage extends Component {
 
@@ -51,8 +53,9 @@ class UserManage extends Component {
                     isOpenModalUser: false
                 })
                 await this.getAllUsersFromReact(); // gọi lại API để lấy danh sách mới
+                emitter.emit('EVENT_CLEAR_MODAL_DATA', {'id': 'your id'}); // clear data modal
             } else {
-                alert(response.errMessage)
+                alert(response.errMessage);
             }
             console.log("check response", response);
         } catch (e) {
@@ -60,6 +63,22 @@ class UserManage extends Component {
         }
         console.log('check data', data)
         
+    }
+
+    handleDeleteUser = async(user) => {
+        console.log('delete user', user);
+        try {
+            let response = await deleteUserService(user.id);
+            console.log('check delete user', response);
+            if(response && response.errCode === 0) {
+                await this.getAllUsersFromReact(); // gọi lại API để lấy danh sách mới
+
+            } else {
+                alert(response.errMessage)
+            }
+        } catch (e) {
+            console.log(e)  ;
+        }
     }
     /*  Life cyce
         Run conponent:
@@ -103,7 +122,7 @@ class UserManage extends Component {
                                 <td>{item.address}</td>
                                 <td>
                                     <button className="btn-edit"><i className="fas fa-pencil-alt"></i></button>
-                                    <button className="btn-delete"><i className="fas fa-trash"></i></button>
+                                    <button className="btn-delete" onClick={()=>this.handleDeleteUser(item)}><i className="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             );
