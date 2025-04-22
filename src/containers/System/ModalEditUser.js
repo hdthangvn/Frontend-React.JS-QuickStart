@@ -24,7 +24,7 @@ class ModalEditUser extends Component {
         let user = this.props.currentUser; // lấy dữ liệu từ props truyền vào
         if(user && !_.isEmpty(user)) { // kiểm tra xem user có tồn tại và không phải là object rỗng
             this.setState({
-                id: user.id,
+                id: user.id, // dung id để sửa user
                 email: user.email,
                 password: 'hardcode', // không cho phép sửa password
                 firstName: user.firstName,
