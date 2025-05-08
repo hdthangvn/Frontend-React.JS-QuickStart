@@ -7,7 +7,7 @@
         "doctor": "Doctor",
         "select-doctor": "Select a good doctor",
         "fee": "Checkup package",
-        "check-headth": "General health checkup",
+        "check-health": "General health checkup",
         "support": "Support"
     },
     "banner": {
@@ -15,7 +15,7 @@
         "title2": "COMPREHENSIVE HEALTH CARE",
         "child1": "Specialist examination",
         "child2": "Remote examination",
-        "child3": "General health checkup",
+        "child3": "General checkup",
         "child4": "Medical testing",
         "child5": "Mental health",
         "child6": "Dental examination"
